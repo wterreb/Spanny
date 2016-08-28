@@ -2,8 +2,6 @@
 #include "utils.h"
 #include "shellutils.h"
 #include "shell.h"
-#include "output.h"
-#include "killit.h"
 
 #define TEST_NAME REPEAT
 SHELL_INCLUDE_BEFORE_DEFINITIONS( TEST_NAME )

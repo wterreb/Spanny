@@ -17,4 +17,3 @@ void UTILS_printEnd( const char * function );
 static const unsigned int maxUsTimeDelay  = 16383;
 
 #endif /* __UTILS_H__ */
-

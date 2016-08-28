@@ -1,5 +1,10 @@
 #include "Arduino.h"
 #include "shellutils.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+
+
 
 //-----------------------------------------------------------------------------------------------------------------
 unsigned int SHELLUTILS_getUIntValue( char *args ) {
@@ -12,6 +17,18 @@ unsigned int SHELLUTILS_getUIntValue( char *args ) {
 
     return 0;
 }
+
+long SHELLUTILS_getLongValue( char *args ) {
+    char *temp;
+    long retVal = 0;
+    temp = strtok( args, " " );
+    char *ptr;
+    if ( temp ){
+     retVal = strtoul(temp, &ptr, 10);
+    }
+    return retVal;
+}
+
 
 //-----------------------------------------------------------------------------------------------------------------
 char *SHELLUTILS_getString( char *args ) {

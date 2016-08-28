@@ -1,4 +1,4 @@
-
+#
 
 #ifndef __SHELLUTILS_H__
 #define __SHELLUTILS_H__
@@ -42,6 +42,7 @@ typedef struct shellType {
     static void SetValue( char* args ) { SHELLUTILS_SetValue( args, &all ); }
 
 unsigned int SHELLUTILS_getUIntValue( char *args );
+long SHELLUTILS_getLongValue( char *args );
 char *SHELLUTILS_getString( char *args );
 void SHELLUTILS_RunCommand( char *command, char *args, shellType_t const *pInfo );
 void SHELLUTILS_SetValue( char* args, shellType_t const *pInfo );
@@ -50,4 +51,3 @@ void SHELLUTILS_PrintHelp( shellType_t const *pInfo );
 void SHELLUTILS_Reset( shellType_t const *pInfo  );
 
 #endif __SHELLUTILS_H__
-

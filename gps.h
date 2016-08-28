@@ -2,17 +2,18 @@
 #ifndef __GPS_H__
 #define __GPS_H__
 
-//#include "shellutils.h"
+//void GPS_printHelp( void );
+void GPS_RunCmd(  char *comand, char *args );
+void GPS_Details( void );
+void GPS_FixStatus( void );
+void GPS_Lat( void);
+void GPS_Lng( void);
+void GPS_Speed( void );
+void GPS_Altitude( void );
+void printTimeZone( void );
+void GPS_Time( void );
+void GPS_NMEA( char* param );
+void GPS_TimeZone( char* param );
 
-void GPS_printHelp( void );
-/*
-#define GPS_INCLUDE_BEFORE_DEFINITIONS( name ) \
-   void GPS_PrintHelp( void );
-   
-#define GPS_INCLUDE_AFTER_DEFINITIONS( name ) \
-    shellType_t const all = { .pFuncs = funcs, .numFuncs = ARRAY_LENGTH( funcs ), \
-            .pVars = vars, .pDefaults = (unsigned int *)defaults, \
-            .numVars = ARRAY_LENGTH( vars ) }; \
-    static void PrintHelp( void ) { GPS_PrintHelp( &all ); } \   
-*/
+
 #endif __GPS_H__

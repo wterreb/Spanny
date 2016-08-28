@@ -7,5 +7,4 @@ typedef struct command {
     char *description;
 } command_t;
 
-
 #endif __SHARED_H__

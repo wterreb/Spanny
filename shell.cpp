@@ -1,5 +1,6 @@
 #include "Arduino.h"
 
+#include <string.h>
 #include "utils.h"
 #include "shell.h"
 #include "shared.h"
@@ -8,22 +9,21 @@
 static const char ASCII_BELL = 0x07;
 static const char ASCII_DEL  = 0x08;
 static const char ASCII_CR   = 0x0D;
+static const char ASCII_NL   = 0x0A;
 
 static char serialLineBuffer[ LINE_BUFFER_SIZE ];
 static char serialLineBufferCopy[ LINE_BUFFER_SIZE ];
 static unsigned int serialPosition = 0;
 
 
-
-
 static void printHelp ( char *, char * );
 
 command_t availableCommands[] = {
     { "help",      printHelp,               "This command" },
-    { "gps,        GPS_RunCmd,     "GPS related"}
-    { "set",       SETTINGS_Set,        "CI210 tests: Immunity from Continuous PowerLine Disturbances" },
-    { "fake",      FAKE_fake,        "CI260 tests: Immunity to Voltage Dropout" },
-    {} 
+    { "gps",        GPS_RunCmd,     "GPS related"},
+ //   { "set",       SETTINGS_Set,        "CI210 tests: Immunity from Continuous PowerLine Disturbances" },
+ //   { "fake",      FAKE_fake,        "CI260 tests: Immunity to Voltage Dropout" },
+ //   {} 
 };
 
 
@@ -95,7 +95,9 @@ void SHELL_processLine( char *line  ) {
     }
 
     if ( i >= ARRAY_LENGTH( availableCommands ) ) {
-        Serial.println( "Unknown command" );
+        Serial.print( "Unknown command : '" );
+        Serial.print( line );
+        Serial.println("'");
     }
     printPrompt();
 }
@@ -107,6 +109,7 @@ void SHELL_printHelp ( void ) {
 
 //-----------------------------------------------------------------------------------------------------------------
 void SHELL_process( void ) {
+
     if (Serial.available() > 0)
     {
         int byteReceived = Serial.read();
@@ -127,21 +130,25 @@ void SHELL_process( void ) {
                 Serial.println( "" );
                 serialLineBuffer[ serialPosition ] = 0;
                 SHELL_processLine( (char *)&serialLineBuffer );
-                mempcpy( serialLineBufferCopy, serialLineBuffer, LINE_BUFFER_SIZE );
+                memcpy( serialLineBufferCopy, serialLineBuffer, LINE_BUFFER_SIZE );
                 serialPosition = 0;
                 break;
+
+            case ASCII_NL:
+               // Ignore   
+               break;
 
             case '!':
                 // Repeat last line
                 if ( 0 == serialPosition ) {
-                    mempcpy( serialLineBuffer, serialLineBufferCopy, LINE_BUFFER_SIZE );
+                    memcpy( serialLineBuffer, serialLineBufferCopy, LINE_BUFFER_SIZE );
                     SHELL_processLine( (char *)&serialLineBuffer );
                 }
                 break;
 
             default:
                 if ( serialPosition < LINE_BUFFER_SIZE ) {
-                    serialLineBuffer[ serialPosition ] = (char)byteReceived;
+                    serialLineBuffer[ serialPosition ] = tolower((char)byteReceived);
                     serialPosition++;
                     Serial.write( byteReceived );
                 }
