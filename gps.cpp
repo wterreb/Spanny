@@ -14,17 +14,17 @@ static const unsigned int defaults [ 0 ] = { };
 
 
 static functions_t funcs[] = {
-    { "help",      SHELL_COMMAND PrintHelp, "This help" },
-    { "vars",      SHELL_COMMAND PrintVars,  "Display variable values" },
-    { "details",   SHELL_COMMAND GPS_Details,   "General GPS info" },
-    { "fixstatus", SHELL_COMMAND GPS_FixStatus,   "GPS info" },
+    { "help",      SHELL_COMMAND PrintHelp,              "This help" },
+    { "vars",      SHELL_COMMAND PrintVars,              "Display variable values" },
+    { "details",   SHELL_COMMAND GPS_Details,            "General GPS info" },
+    { "fixstatus", SHELL_COMMAND GPS_FixStatus,          "GPS info" },
     { "lat",       SHELL_COMMAND GPS_Lat,                "Latitude" },
     { "lng",       SHELL_COMMAND GPS_Lng,                "Longtitude" },
     { "speed",     SHELL_COMMAND GPS_Speed,              "Speed in km/h" },
     { "alti",      SHELL_COMMAND GPS_Altitude,           "Altitude in m" },
     { "time",      SHELL_COMMAND GPS_Time,               "Time (local time zone)" },
-    { "verbose",   SHELL_COMMAND GPS_NMEA,               "'gps nmea on/off' to show/hide NMEA strings" },
-    { "timezone",     SHELL_COMMAND GPS_TimeZone,           "'gps tzone -10' sets TZ to GMT-10" },
+    { "verbose",   SHELL_COMMAND GPS_NMEA,               "Show/hide NMEA strings. Example : 'gps verbose on/off'" },
+    { "timezone",  SHELL_COMMAND GPS_TimeZone,           "Sets timezone.  Example : 'gps tzone -10' sets TZ to GMT-10" },
     {}
 };
 

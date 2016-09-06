@@ -113,9 +113,10 @@ void SHELL_process( void ) {
     if (Serial.available() > 0)
     {
         int byteReceived = Serial.read();
-
+    
         switch ( byteReceived ) {
             case ASCII_DEL:  // Backspace
+                Serial.print("<");
                 // Delete last char
                 if ( serialPosition > 0 ){
                     Serial.write( ASCII_DEL );
@@ -126,15 +127,18 @@ void SHELL_process( void ) {
                 break;
 
             case ASCII_CR:
+                Serial.print("!");  //!!!!!!!!!!!!!!!!!!!
                 // Process line
-                Serial.println( "" );
+                Serial.println( "" );   
                 serialLineBuffer[ serialPosition ] = 0;
+                Serial.print( "'" ); Serial.print( "'" ); Serial.println( "'" );  //!!!!!!!!!!!!!!!!!!!
                 SHELL_processLine( (char *)&serialLineBuffer );
                 memcpy( serialLineBufferCopy, serialLineBuffer, LINE_BUFFER_SIZE );
                 serialPosition = 0;
                 break;
 
             case ASCII_NL:
+               Serial.print("#");  //!!!!!!!!!!!!!!!!!!!
                // Ignore   
                break;
 

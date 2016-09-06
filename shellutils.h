@@ -50,4 +50,4 @@ void SHELLUTILS_PrintVars( shellType_t const *pInfo );
 void SHELLUTILS_PrintHelp( shellType_t const *pInfo );
 void SHELLUTILS_Reset( shellType_t const *pInfo  );
 
-#endif __SHELLUTILS_H__
+#endif // __SHELLUTILS_H__

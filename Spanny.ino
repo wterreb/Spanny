@@ -23,8 +23,10 @@ void loop() {
     SHELL_process();
 
     char c = GPS.read();
+    
 
     if (c) {
+        
         gpsprocess.ProcessLoop();
         if ( showNmea )  {
            Serial.print(c);
