@@ -12,7 +12,7 @@ void GPS_Speed( void );
 void GPS_Altitude( void );
 void printTimeZone( void );
 void GPS_Time( void );
-void GPS_NMEA( char* param );
+void GPS_Verbose( char* param );
 void GPS_TimeZone( char* param );
 
 

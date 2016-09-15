@@ -16,15 +16,15 @@ static const unsigned int defaults [ 0 ] = { };
 static functions_t funcs[] = {
     { "help",      SHELL_COMMAND PrintHelp,              "This help" },
     { "vars",      SHELL_COMMAND PrintVars,              "Display variable values" },
-    { "details",   SHELL_COMMAND GPS_Details,            "General GPS info" },
-    { "fixstatus", SHELL_COMMAND GPS_FixStatus,          "GPS info" },
+    { "show",      SHELL_COMMAND GPS_Details,            "General GPS info" },
+    { "fix",       SHELL_COMMAND GPS_FixStatus,          "GPS fix status" },
     { "lat",       SHELL_COMMAND GPS_Lat,                "Latitude" },
     { "lng",       SHELL_COMMAND GPS_Lng,                "Longtitude" },
     { "speed",     SHELL_COMMAND GPS_Speed,              "Speed in km/h" },
     { "alti",      SHELL_COMMAND GPS_Altitude,           "Altitude in m" },
     { "time",      SHELL_COMMAND GPS_Time,               "Time (local time zone)" },
-    { "verbose",   SHELL_COMMAND GPS_NMEA,               "Show/hide NMEA strings. Example : 'gps verbose on/off'" },
-    { "timezone",  SHELL_COMMAND GPS_TimeZone,           "Sets timezone.  Example : 'gps tzone -10' sets TZ to GMT-10" },
+    { "verbose",   SHELL_COMMAND GPS_Verbose,               "Show/hide NMEA strings. Example : 'gps verbose on/off'" },
+    { "tzone",     SHELL_COMMAND GPS_TimeZone,           "Sets timezone.  Example : 'gps tzone -10' sets TZ to GMT-10" },
     {}
 };
 
@@ -35,7 +35,15 @@ void GPS_RunCmd( char *command, char *args ) {
 }
 
 void GPS_Details( void ) {
-    Serial.println("GPS Details");
+    Serial.println("GPS Details :");
+    Serial.print("time="); GPS_Time(); 
+    GPS_FixStatus();
+    Serial.print("lat="); GPS_Lat();
+    Serial.print("lng="); GPS_Lng();
+    Serial.print("speed="); GPS_Speed();
+    Serial.print("alitude="); GPS_Altitude();
+    
+    
 }
 
 void GPS_FixStatus( void ) {
@@ -45,19 +53,19 @@ void GPS_FixStatus( void ) {
 }
  
 void GPS_Lat( void) {
-  Serial.println("Latitude");
+  Serial.println(latitude);
 }
 
 void GPS_Lng( void) {
-  Serial.println("Longitude");
+  Serial.println(longitude);
 }
 
 void GPS_Speed( void ) {
-  Serial.println("Speed");
+  Serial.println(speed);
 }
 
 void GPS_Altitude( void ) {
-  Serial.println("Altitude");
+  Serial.print(altitude);
 }
 void printTimeZone( void ) {
   Serial.print("GMT");
@@ -91,26 +99,25 @@ void GPS_Time( void ) {
    Serial.println("");
 }
 
-void GPS_NMEA( char* param ) {
-  Serial.println();
-  if ( strcmp(param, "on")==0 || strcmp(param, "true")==0|| strcmp(param, "1")==0 ) {
-    showNmea = true;
-   // gpsdriver.echoOn = true;
-    Serial.println("Verbose mode enabled");
-  }
-  else {
-     showNmea = false;
-   //  gpsdriver.echoOn = false;
-     Serial.println("Verbose mode disabled");
-  }
-    
-}
-
 void GPS_TimeZone( char* param ) {
   if (param != NULL) {
      timezone = SHELLUTILS_getLongValue(param);
   }
   printTimeZone();
-  
 }
+
+void GPS_Verbose( char* param ) {
+  Serial.println();
+  if ( strcmp(param, "on")==0 || strcmp(param, "true")==0 || strcmp(param, "1")==0 ) {
+    showNmea = true;
+    Serial.println("Verbose mode enabled");
+  }
+  else {
+     showNmea = false;
+     Serial.println("Verbose mode disabled");
+  }
+    
+}
+
+
 

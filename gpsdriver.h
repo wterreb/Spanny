@@ -4,7 +4,7 @@
 
 #include <Arduino.h>
 #include <Adafruit_GPS.h>
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
 
 #define GPS_TX      8
 #define GPS_RX      9
@@ -12,7 +12,6 @@
 class gpsdriver
 {
 public:
-  boolean echoOn  = false;
   gpsdriver( Adafruit_GPS* gps );
   unsigned char tics;
   // methods
@@ -35,6 +34,7 @@ private:
    bool useMetric = true;
 
  //  SoftwareSerial mySerial;
+ 
    Adafruit_GPS* GPS;
 
 };

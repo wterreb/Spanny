@@ -9,5 +9,6 @@ extern uint8_t fixquality, satellites;
 
 extern bool showNmea;
 extern int8_t timezone;
+extern int limits[3][4];
 
 #endif

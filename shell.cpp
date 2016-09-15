@@ -20,9 +20,8 @@ static void printHelp ( char *, char * );
 
 command_t availableCommands[] = {
     { "help",      printHelp,               "This command" },
-    { "gps",        GPS_RunCmd,     "GPS related"},
- //   { "set",       SETTINGS_Set,        "CI210 tests: Immunity from Continuous PowerLine Disturbances" },
- //   { "fake",      FAKE_fake,        "CI260 tests: Immunity to Voltage Dropout" },
+    { "gps",       GPS_RunCmd,     "GPS related"},
+    { "set",       SET_RunCmd,     "SET limits"},
  //   {} 
 };
 
@@ -108,11 +107,21 @@ void SHELL_printHelp ( void ) {
 };
 
 //-----------------------------------------------------------------------------------------------------------------
-void SHELL_process( void ) {
+int SHELL_process( void ) {
 
+    int byteReceived = 0;
     if (Serial.available() > 0)
     {
-        int byteReceived = Serial.read();
+        byteReceived = Serial.read();
+
+
+        if (byteReceived == 0x0A)
+           Serial.print("!");   // !!!!!!!!!!!!!!!!!
+        if (byteReceived == 0x0D)
+           Serial.print("@");   // !!!!!!!!!!!!!!!!!
+        if (byteReceived == ' ')
+           Serial.print("$");
+        
     
         switch ( byteReceived ) {
             case ASCII_DEL:  // Backspace
@@ -127,18 +136,17 @@ void SHELL_process( void ) {
                 break;
 
             case ASCII_CR:
-                Serial.print("!");  //!!!!!!!!!!!!!!!!!!!
                 // Process line
                 Serial.println( "" );   
+                serialLineBuffer[ serialPosition++ ] = ' ';
                 serialLineBuffer[ serialPosition ] = 0;
-                Serial.print( "'" ); Serial.print( "'" ); Serial.println( "'" );  //!!!!!!!!!!!!!!!!!!!
                 SHELL_processLine( (char *)&serialLineBuffer );
                 memcpy( serialLineBufferCopy, serialLineBuffer, LINE_BUFFER_SIZE );
+                memset(serialLineBuffer, 0, LINE_BUFFER_SIZE);
                 serialPosition = 0;
                 break;
 
             case ASCII_NL:
-               Serial.print("#");  //!!!!!!!!!!!!!!!!!!!
                // Ignore   
                break;
 
@@ -162,4 +170,5 @@ void SHELL_process( void ) {
                 break;
         }
     }
+    return byteReceived;
 }
