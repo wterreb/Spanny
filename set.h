@@ -2,12 +2,13 @@
 #ifndef __SETLIMITS_H__
 #define __SETLIMITS_H__
 
-//void GPS_printHelp( void );
-void SET_RunCmd(  char *comand, char *args );
-void SET_Details( void );
-void SET_SpeedLimit( char* channel );
-
-void showExistingSpeedLimits();
-
+  void settingsInit( void );
+  void SET_RunCmd(  char *comand, char *args );
+  void Details( void );
+  static void SpeedLimit( char* channel );   
+  static void showExistingSpeedLimits();
+  void showSpeedLimit(int zoneNr);
+  int extract_params(char *buffer);
+  void ReadEeprom();
 
 #endif //__SETLIMITS_H__

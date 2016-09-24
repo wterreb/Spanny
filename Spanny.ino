@@ -2,6 +2,7 @@
 
 #include "shell.h"
 #include "gpsdriver.h"
+#include "storage.h"
 #include "common.h"
 //#include <avr/wdt.h>
 
@@ -12,6 +13,7 @@
 //Adafruit_GPS GPS(&mySerial);
 Adafruit_GPS GPS(&Serial1);
 gpsdriver gpsprocess(&GPS);
+storage eeprom;
 
 
 void setup() {
@@ -20,6 +22,7 @@ void setup() {
   Serial1.begin(9600);
   Serial.begin(115200);
   SHELL_printHelp();
+  eeprom.readSpeedLimits();
 //  wdt_enable(WDTO_1S);
 }
 

@@ -7,4 +7,12 @@ typedef struct command {
     char *description;
 } command_t;
 
+typedef struct speedlimit {  
+   byte lowerLimit;
+   byte upperLimit;
+   byte delaySeconds;
+};   
+
+
+
 #endif // __SHARED_H__

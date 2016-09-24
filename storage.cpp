@@ -1,38 +1,30 @@
 #include "Arduino.h"
 #include "storage.h"
 #include <EEPROM.h>
+#include "common.h"
 
-
-
-void storage::readSpeedLimits()
+storage::storage(void )
 {
-
-  
+   nrElements = sizeof(speedLimits)/sizeof(speedLimits[0]);  
 }
 
-void storage::EEPROMLoad() {
-   int addr = 0;
-   contrast = EEPROM.read(addr++);
-   for (int i=0; i<6; i++) {
-      addr += i*2;
-      speedlimit[i] = EEPROMReadInt(addr);
+void storage::readSpeedLimits() {
+   int addr = EEPROM_START_LOC;
+   for (int i=0; i<nrElements; i++) {
+      EEPROMReadSpeedLimit(addr, speedLimits[i]);
+      addr += addr + sizeof(speedLimits);
    }
-   addr += 2;
-   odoDistance = EEPROMReadlong( addr );
 }
 
-void storage::EEPROMSave() {
-   int addr = 0;
-   EEPROM.update(addr++, contrast);
-   for (int i=0; i<6; i++) {
-      addr += i*2;
-      EEPROMUpdateInt(addr, speedlimit[i]);
+void storage::saveSpeedLimits() {
+   int addr = EEPROM_START_LOC;
+   for (int i=0; i<nrElements; i++) {
+      EEPROMUpdateSpeedLimit(addr, speedLimits[i]);
+      addr += addr + sizeof(speedLimits);
    }
-   addr += 2;
-   EEPROMWritelong( addr, odoDistance );
 }
-*/
 
+/*
 //This function will write a 2 byte integer to the eeprom at the specified address and address + 1
 void storage::EEPROMUpdateInt(int p_address, int p_value) {
      byte lowByte = ((p_value >> 0) & 0xFF);
@@ -94,4 +86,28 @@ long storage::EEPROMReadlong(long address) {
       //Return the recomposed long by using bitshift.
       return ((four << 0) & 0xFF) + ((three << 8) & 0xFFFF) + ((two << 16) & 0xFFFFFF) + ((one << 24) & 0xFFFFFFFF); 
   #endif       
+}
+*/
+
+
+// returns the number of bytes written
+int storage::EEPROMUpdateSpeedLimit(const long startAddress, const speedlimit& value)
+{
+    const byte* p = (const byte*)(const void*)&value;
+    unsigned int i;
+    long address = startAddress;
+    for (i = 0; i < sizeof(value); i++)
+          EEPROM.update(address++, *p++);
+    return i;
+}
+
+// returns the number of bytes read
+int storage::EEPROMReadSpeedLimit(const long startAddress,  speedlimit& value)
+{
+    byte* p = (byte*)(void*)&value;
+    unsigned int i;
+    long address = startAddress;
+    for (i = 0; i < sizeof(value); i++)
+          *p++ = EEPROM.read(address++);
+    return i;
 }
