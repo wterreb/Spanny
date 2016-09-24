@@ -13,12 +13,12 @@ bool showNmea;
 int8_t timezone;
 
 // Member functions definitions including constructor
-gpsdriver::gpsdriver(  Adafruit_GPS* gps ) {
+Gpsdriver::Gpsdriver(  Adafruit_GPS* gps ) {
    GPS = gps;
 }
 
 //  This gets called as often as possible from the main loop
- void gpsdriver::ProcessLoop( void ) {      
+ void Gpsdriver::ProcessLoop( void ) {      
     // if a sentence is received, we can process it now
     if (GPS->newNMEAreceived()) {  
         if (!GPS->parse(GPS->lastNMEA())) {  // this also sets the newNMEAreceived() flag to false
@@ -40,4 +40,9 @@ gpsdriver::gpsdriver(  Adafruit_GPS* gps ) {
         }
     }
  }
+ 
+ double Gpsdriver::getSpeed( void ) {
+    return 1.852 * GPS->speed;
+ }
+
 

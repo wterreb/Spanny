@@ -3,9 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
-
 //-----------------------------------------------------------------------------------------------------------------
 unsigned int SHELLUTILS_getUIntValue( char *args ) {
     char *temp;
@@ -25,6 +22,17 @@ long SHELLUTILS_getLongValue( char *args ) {
     char *ptr;
     if ( temp ){
      retVal = strtoul(temp, &ptr, 10);
+    }
+    return retVal;
+}
+
+double SHELLUTILS_getDoubleValue( char *args ) {
+    char *temp;
+    double retVal = 0;
+    temp = strtok( args, " " );
+    char *ptr;
+    if ( temp ){
+     retVal = strtod(temp, &ptr);
     }
     return retVal;
 }

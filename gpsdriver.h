@@ -9,10 +9,10 @@
 #define GPS_TX      8
 #define GPS_RX      9
 
-class gpsdriver
+class Gpsdriver
 {
 public:
-  gpsdriver( Adafruit_GPS* gps );
+  Gpsdriver( Adafruit_GPS* gps );
   unsigned char tics;
   // methods
   double getLat( void);

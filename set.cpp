@@ -17,7 +17,7 @@ static const unsigned int defaults [ 0 ] = { };
 speedlimit speedLimits[10];
 int nrElements = 0;
 int zone = 0;
-extern storage eeprom;
+extern Storage storage;
 
 static functions_t funcs[] = {
     { "help",      SHELL_COMMAND PrintHelp,              "This help" },
@@ -28,9 +28,7 @@ static functions_t funcs[] = {
 
 SHELL_INCLUDE_AFTER_DEFINITIONS( TEST_NAME2 )
 
-int getNrElemens() {
-  return (sizeof(speedLimits)) / (sizeof(speedLimits[0])); 
-}
+
 
 void SET_RunCmd( char *command, char *args ) {
     SHELLUTILS_RunCommand( command, args, &all );
@@ -43,8 +41,7 @@ void showExistingSpeedLimits() {
    Serial.println("|         Speed Limits          |");
    Serial.println("--------------------------------");
    Serial.println("| Zone |  Low  |  High | Delay |");
-   int nr = getNrElemens();
-   for (int i=0; i<nr; i++) {
+   for (int i=0; i<nrZones; i++) {
       sprintf (buff,"| %02d   |  %02d   |  %02d   |  %02d   |", i, speedLimits[i].lowerLimit, speedLimits[i].upperLimit, speedLimits[i].delaySeconds );
       Serial.println(buff);
    }
@@ -87,7 +84,7 @@ int extract_params(char *buffer) {
               case 3 : speedLimits[idx].delaySeconds = params[i]; break;
           }
       }
-      eeprom.saveSpeedLimits();
+      storage.saveSpeedLimits();
       showExistingSpeedLimits();
     }
     return wordcount;
@@ -112,7 +109,7 @@ static void SpeedLimit( char* param ) {
 
 void ReadEeprom()
 {
-   eeprom.readSpeedLimits();
+   storage.readSpeedLimits();
    showExistingSpeedLimits();
 }
 

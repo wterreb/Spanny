@@ -43,6 +43,7 @@ typedef struct shellType {
 
 unsigned int SHELLUTILS_getUIntValue( char *args );
 long SHELLUTILS_getLongValue( char *args );
+double SHELLUTILS_getDoubleValue( char *args );
 char *SHELLUTILS_getString( char *args );
 void SHELLUTILS_RunCommand( char *command, char *args, shellType_t const *pInfo );
 void SHELLUTILS_SetValue( char* args, shellType_t const *pInfo );

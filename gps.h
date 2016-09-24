@@ -14,6 +14,7 @@ void printTimeZone( void );
 void GPS_Time( void );
 void GPS_Verbose( char* param );
 void GPS_TimeZone( char* param );
+void GPS_FakeSpeed( char* param );
 
 
 #endif //__GPS_H__

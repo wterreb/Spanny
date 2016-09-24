@@ -113,16 +113,7 @@ int SHELL_process( void ) {
     if (Serial.available() > 0)
     {
         byteReceived = Serial.read();
-
-
-        if (byteReceived == 0x0A)
-           Serial.print("!");   // !!!!!!!!!!!!!!!!!
-        if (byteReceived == 0x0D)
-           Serial.print("@");   // !!!!!!!!!!!!!!!!!
-        if (byteReceived == ' ')
-           Serial.print("$");
-        
-    
+   
         switch ( byteReceived ) {
             case ASCII_DEL:  // Backspace
                 Serial.print("<");

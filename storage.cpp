@@ -3,22 +3,22 @@
 #include <EEPROM.h>
 #include "common.h"
 
-storage::storage(void )
+Storage::Storage(void )
 {
-   nrElements = sizeof(speedLimits)/sizeof(speedLimits[0]);  
+    
 }
 
-void storage::readSpeedLimits() {
+void Storage::readSpeedLimits() {
    int addr = EEPROM_START_LOC;
-   for (int i=0; i<nrElements; i++) {
+   for (int i=0; i<nrZones; i++) {
       EEPROMReadSpeedLimit(addr, speedLimits[i]);
       addr += addr + sizeof(speedLimits);
    }
 }
 
-void storage::saveSpeedLimits() {
+void Storage::saveSpeedLimits() {
    int addr = EEPROM_START_LOC;
-   for (int i=0; i<nrElements; i++) {
+   for (int i=0; i<nrZones; i++) {
       EEPROMUpdateSpeedLimit(addr, speedLimits[i]);
       addr += addr + sizeof(speedLimits);
    }
@@ -26,7 +26,7 @@ void storage::saveSpeedLimits() {
 
 /*
 //This function will write a 2 byte integer to the eeprom at the specified address and address + 1
-void storage::EEPROMUpdateInt(int p_address, int p_value) {
+void Storage::EEPROMUpdateInt(int p_address, int p_value) {
      byte lowByte = ((p_value >> 0) & 0xFF);
      byte highByte = ((p_value >> 8) & 0xFF);
 
@@ -40,7 +40,7 @@ void storage::EEPROMUpdateInt(int p_address, int p_value) {
 }
 
 //This function will read a 2 byte integer from the eeprom at the specified address and address + 1
-unsigned int storage::EEPROMReadInt(int p_address) {
+unsigned int Storage::EEPROMReadInt(int p_address) {
   #if defined(__SAM3X8E__)
     // do nothing for Due's SAM3XA 
   #else
@@ -54,7 +54,7 @@ unsigned int storage::EEPROMReadInt(int p_address) {
 
 //This function will write a 4 byte (32bit) long to the eeprom at
 //the specified address to address + 3.
-void storage::EEPROMWritelong(int address, long value) {
+void Storage::EEPROMWritelong(int address, long value) {
       //Decomposition from a long to 4 bytes by using bitshift.
       //One = Most significant -> Four = Least significant byte
       char four = (value & 0xFF);
@@ -72,7 +72,7 @@ void storage::EEPROMWritelong(int address, long value) {
 #endif      
 }
 
-long storage::EEPROMReadlong(long address) {
+long Storage::EEPROMReadlong(long address) {
   #if defined(__SAM3X8E__)
   // do nothing forDue's SAM3XA 
   return 0;
@@ -91,7 +91,7 @@ long storage::EEPROMReadlong(long address) {
 
 
 // returns the number of bytes written
-int storage::EEPROMUpdateSpeedLimit(const long startAddress, const speedlimit& value)
+int Storage::EEPROMUpdateSpeedLimit(const long startAddress, const speedlimit& value)
 {
     const byte* p = (const byte*)(const void*)&value;
     unsigned int i;
@@ -102,7 +102,7 @@ int storage::EEPROMUpdateSpeedLimit(const long startAddress, const speedlimit& v
 }
 
 // returns the number of bytes read
-int storage::EEPROMReadSpeedLimit(const long startAddress,  speedlimit& value)
+int Storage::EEPROMReadSpeedLimit(const long startAddress,  speedlimit& value)
 {
     byte* p = (byte*)(void*)&value;
     unsigned int i;

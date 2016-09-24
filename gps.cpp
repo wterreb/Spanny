@@ -13,6 +13,7 @@ static store_t vars[ 0 ] = { };
 static const unsigned int defaults [ 0 ] = { };
 
 
+
 static functions_t funcs[] = {
     { "help",      SHELL_COMMAND PrintHelp,              "This help" },
     { "vars",      SHELL_COMMAND PrintVars,              "Display variable values" },
@@ -23,8 +24,9 @@ static functions_t funcs[] = {
     { "speed",     SHELL_COMMAND GPS_Speed,              "Speed in km/h" },
     { "alti",      SHELL_COMMAND GPS_Altitude,           "Altitude in m" },
     { "time",      SHELL_COMMAND GPS_Time,               "Time (local time zone)" },
-    { "verbose",   SHELL_COMMAND GPS_Verbose,               "Show/hide NMEA strings. Example : 'gps verbose on/off'" },
+    { "verbose",   SHELL_COMMAND GPS_Verbose,            "Show/hide NMEA strings. Example : 'gps verbose on/off'" },
     { "tzone",     SHELL_COMMAND GPS_TimeZone,           "Sets timezone.  Example : 'gps tzone -10' sets TZ to GMT-10" },
+    { "fake",      SHELL_COMMAND GPS_FakeSpeed,          "Sets a fake gps speed to allow easier testing" },
     {}
 };
 
@@ -116,7 +118,13 @@ void GPS_Verbose( char* param ) {
      showNmea = false;
      Serial.println("Verbose mode disabled");
   }
-    
+}
+
+void GPS_FakeSpeed( char* param ) {
+
+    if (param != NULL) {
+       fakeGpsSpeed = SHELLUTILS_getDoubleValue(param);
+    }
 }
 
 
