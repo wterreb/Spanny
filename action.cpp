@@ -7,9 +7,9 @@ Action::Action() {
 }
 
 //  Checks one speed zone at a time each time this is called
-bool Action::isAlertRequired(int currentSpeed) {
+bool Action::processSpeed(int currentSpeed) {
    bool returnVal = false;
-   if (currentZone < nrZones)
+   if (currentZone < gZoneCount)
    {
       if ( isSpeedViolation(currentZone, currentSpeed)) {      
            returnVal = isTimeViolation(currentZone);       
@@ -23,12 +23,26 @@ bool Action::isAlertRequired(int currentSpeed) {
    else {
       currentZone = 0;
    }
+
+   if ( returnVal )  {
+       if (buzzerToggle == false) {
+          buzzerToggle = true;
+          Serial.println("Start Buzzing");
+       }
+    } 
+    else {
+      if (buzzerToggle == true) {
+          buzzerToggle = false;
+          Serial.println("Stop Buzzing");  
+      }
+    }
+    pulseBuzzer( buzzerToggle );
    return returnVal;
 }
 
 bool Action::isSpeedViolation(int zone, int speed) {
     bool returnVal = false;
-    if ( (speed > speedLimits[zone].lowerLimit) && (speed < speedLimits[zone].upperLimit) ) {
+    if ( (speed > gSpeedLimits[zone].lowerLimit) && (speed < gSpeedLimits[zone].upperLimit) ) {
          
          returnVal = true;
     }
@@ -37,7 +51,7 @@ bool Action::isSpeedViolation(int zone, int speed) {
 
 bool Action::isTimeViolation(int zone) {
   bool returnVal = false; 
-  if (stopwatch.elapsed() > (unsigned long)speedLimits[zone].delaySeconds) {
+  if (stopwatch.elapsed() > (unsigned long)gSpeedLimits[zone].delaySeconds) {
      stopwatch.stop();
      returnVal = true;
   } else {

@@ -71,16 +71,16 @@ void GPS_Altitude( void ) {
 }
 void printTimeZone( void ) {
   Serial.print("GMT");
-  if ( timezone > 0 ) {
+  if ( gSettings.timezone > 0 ) {
     Serial.print("+");
   }
-  Serial.print(timezone);
+  Serial.print(gSettings.timezone);
 }
 
 void GPS_Time( void ) {
   Serial.print("Time ");
   
-   uint8_t hourTZ = hour + timezone;
+   uint8_t hourTZ = hour + gSettings.timezone;
    if (hourTZ < 0) { 
       hourTZ += 24; 
       day = day+1;
@@ -103,7 +103,7 @@ void GPS_Time( void ) {
 
 void GPS_TimeZone( char* param ) {
   if (param != NULL) {
-     timezone = SHELLUTILS_getLongValue(param);
+     gSettings.timezone = SHELLUTILS_getLongValue(param);
   }
   printTimeZone();
 }
@@ -111,11 +111,11 @@ void GPS_TimeZone( char* param ) {
 void GPS_Verbose( char* param ) {
   Serial.println();
   if ( strcmp(param, "on")==0 || strcmp(param, "true")==0 || strcmp(param, "1")==0 ) {
-    showNmea = true;
+    gShowNmea = true;
     Serial.println("Verbose mode enabled");
   }
   else {
-     showNmea = false;
+     gShowNmea = false;
      Serial.println("Verbose mode disabled");
   }
 }
@@ -123,7 +123,7 @@ void GPS_Verbose( char* param ) {
 void GPS_FakeSpeed( char* param ) {
 
     if (param != NULL) {
-       fakeGpsSpeed = SHELLUTILS_getDoubleValue(param);
+       gFakeGpsSpeed = SHELLUTILS_getDoubleValue(param);
     }
 }
 

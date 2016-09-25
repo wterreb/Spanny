@@ -5,10 +5,15 @@
   void settingsInit( void );
   void SET_RunCmd(  char *comand, char *args );
   void Details( void );
-  static void SpeedLimit( char* channel );   
-  static void showExistingSpeedLimits();
+  void SetZoneSpeedLimits( char* param );
+  void SetBuzzer (char* param );
+  void SetSpeedUnit (char* param );
+  void SetDefaultSettings();
+  void SetAllDefaults();
+  void showExistingSpeedLimits();
+  void showExistingSettings();
   void showSpeedLimit(int zoneNr);
   int extract_params(char *buffer);
-  void ReadEeprom();
+  void ShowSettings();
 
 #endif //__SETLIMITS_H__

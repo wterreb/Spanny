@@ -9,8 +9,7 @@ float altitude, speed, angle, magvariation, HDOP;
 boolean fix;
 uint8_t fixquality, satellites;
 
-bool showNmea;
-int8_t timezone;
+
 
 // Member functions definitions including constructor
 Gpsdriver::Gpsdriver(  Adafruit_GPS* gps ) {

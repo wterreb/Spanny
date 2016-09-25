@@ -5,7 +5,7 @@
 #include "storage.h"
 #include "common.h"
 #include "action.h"
-//#include <avr/wdt.h>
+#include <avr/wdt.h>
 
 #define GPS_TX      8
 #define GPS_RX      9
@@ -14,12 +14,15 @@
 //Adafruit_GPS GPS(&mySerial);
 Adafruit_GPS gps(&Serial1);
 Gpsdriver gpsdriver(&gps);
-Storage storage;
-int nrZones;
-Action action;
-double fakeGpsSpeed;
-boolean buzzerToggle = false;
+bool gShowNmea = false;
+bool gBuzzOnce = false;
 
+Action action;
+double gFakeGpsSpeed;
+Speedlimit_t gSpeedLimits[10];
+Settings_t gSettings;
+Storage storage;
+int gZoneCount  = sizeof(gSpeedLimits)/sizeof(gSpeedLimits[0]); 
 
 void setup() {
   // 9600 NMEA is the default baud rate for Adafruit MTK GPS's- some use 4800
@@ -27,48 +30,24 @@ void setup() {
   Serial1.begin(9600);
   Serial.begin(115200);
   SHELL_printHelp();
-  nrZones = sizeof(speedLimits)/sizeof(speedLimits[0]); 
-  storage.readSpeedLimits();
-  
-  
-//  wdt_enable(WDTO_1S);
+  wdt_enable(WDTO_1S);
 }
 
 void loop() {
   if (SHELL_process() == 0)
   {
     char c = gps.read();
-
     if (c) {
       gpsdriver.ProcessLoop();
-      if ( showNmea )  {
+      if ( gShowNmea )  {
         Serial.print(c);
       }
     }
-
     double gpsspeed = gpsdriver.getSpeed();
-    if (fakeGpsSpeed > 1.0) {
-      gpsspeed = fakeGpsSpeed;    
+    if (gFakeGpsSpeed > 1.0) {
+      gpsspeed = gFakeGpsSpeed;    
     }
-    if ( action.isAlertRequired( gpsspeed ) ) {
-       if (buzzerToggle == false) {
-          buzzerToggle = true;
-          Serial.println("Buzzer On");
-       }
-      //  BuzzerOn
-    } 
-    else {
-      if (buzzerToggle == true) {
-          buzzerToggle = false;
-          Serial.println("Buzzer Off");  
-      }
-    }
-    if ( action.pulseBuzzer( buzzerToggle ) ) {
-        // Beep now
-    }
-
-
-   
+    action.processSpeed( gpsspeed );
   }
-//  wdt_reset();
+  wdt_reset();
 }

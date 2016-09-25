@@ -11,11 +11,13 @@ public:
   Storage();
   void readSpeedLimits();
   void saveSpeedLimits();
+  void saveSettings();
+  void readSettings(); 
   
 private:
-  int EEPROMUpdateSpeedLimit(const long startAddress, const speedlimit& value);
-  int EEPROMReadSpeedLimit(const long startAddress,  speedlimit& value);
-  int EEPROM_START_LOC = 0;
+  //int EEPROMReadSpeedLimit(const long startAddress,  Speedlimit_t& value);
+  int EEPROM_SETTINGS_START_LOC = 0;
+  int EEPROM_SPEEDS_START_LOC = 20;
 };
  
 

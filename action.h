@@ -14,14 +14,16 @@ class Action
 {
 public:
   Action( );
-  bool isAlertRequired(int currentSpeed);
-  bool pulseBuzzer(bool isInViolation);
+  bool processSpeed(int currentSpeed);
+  
   
 private:
   bool isTimeViolation(int zone);
   bool isSpeedViolation(int zone, int speed);
+  bool pulseBuzzer(bool isInViolation);
   int currentZone = 0;
   boolean buzzerState = false;
+  boolean buzzerToggle = false;
   unsigned long BUZZER_ON_TIME_MS = 100;
   unsigned long  BUZZER_OFF_TIME_MS = 200;
 };

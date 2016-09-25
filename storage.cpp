@@ -2,112 +2,37 @@
 #include "storage.h"
 #include <EEPROM.h>
 #include "common.h"
+#include "EEPROMAnything.h"
 
 Storage::Storage(void )
 {
-    
+    readSpeedLimits();
+    readSettings();
 }
 
 void Storage::readSpeedLimits() {
-   int addr = EEPROM_START_LOC;
-   for (int i=0; i<nrZones; i++) {
-      EEPROMReadSpeedLimit(addr, speedLimits[i]);
-      addr += addr + sizeof(speedLimits);
+   int addr = EEPROM_SPEEDS_START_LOC;
+   for (int i=0; i<gZoneCount; i++) {
+      EEPROM_readAnything(addr, gSpeedLimits[i]);
+      addr += addr + sizeof(Speedlimit_t);
    }
 }
 
 void Storage::saveSpeedLimits() {
-   int addr = EEPROM_START_LOC;
-   for (int i=0; i<nrZones; i++) {
-      EEPROMUpdateSpeedLimit(addr, speedLimits[i]);
-      addr += addr + sizeof(speedLimits);
+   int addr = EEPROM_SPEEDS_START_LOC;
+   for (int i=0; i<gZoneCount; i++) {
+      EEPROM_writeAnything(addr, gSpeedLimits[i]);
+      addr += addr + sizeof(Speedlimit_t);
    }
 }
 
-/*
-//This function will write a 2 byte integer to the eeprom at the specified address and address + 1
-void Storage::EEPROMUpdateInt(int p_address, int p_value) {
-     byte lowByte = ((p_value >> 0) & 0xFF);
-     byte highByte = ((p_value >> 8) & 0xFF);
-
-#if defined(__SAM3X8E__)
-  // do nothing forDue's SAM3XA 
-#else
-     EEPROM.update(p_address, lowByte);
-     EEPROM.update(p_address + 1, highByte);
-#endif
-
+void Storage::saveSettings() {
+   int addr = EEPROM_SETTINGS_START_LOC;
+    EEPROM_writeAnything(addr, gSettings);
 }
 
-//This function will read a 2 byte integer from the eeprom at the specified address and address + 1
-unsigned int Storage::EEPROMReadInt(int p_address) {
-  #if defined(__SAM3X8E__)
-    // do nothing for Due's SAM3XA 
-  #else
-     byte lowByte = EEPROM.read(p_address);
-     byte highByte = EEPROM.read(p_address + 1);
-
-     return ((lowByte << 0) & 0xFF) + ((highByte << 8) & 0xFF00);
-  #endif    
-  
+void Storage::readSettings() {
+   int addr = EEPROM_SETTINGS_START_LOC;
+    EEPROM_readAnything(addr, gSettings);
 }
 
-//This function will write a 4 byte (32bit) long to the eeprom at
-//the specified address to address + 3.
-void Storage::EEPROMWritelong(int address, long value) {
-      //Decomposition from a long to 4 bytes by using bitshift.
-      //One = Most significant -> Four = Least significant byte
-      char four = (value & 0xFF);
-      char three = ((value >> 8) & 0xFF);
-      char two = ((value >> 16) & 0xFF);
-      char one = ((value >> 24) & 0xFF);
-#if defined(__SAM3X8E__)
-  // do nothing forDue's SAM3XA 
-#else
-      //Write the 4 bytes into the eeprom memory.
-      EEPROM.update(address, four);
-      EEPROM.update(address + 1, three);
-      EEPROM.update(address + 2, two);
-      EEPROM.update(address + 3, one);
-#endif      
-}
-
-long Storage::EEPROMReadlong(long address) {
-  #if defined(__SAM3X8E__)
-  // do nothing forDue's SAM3XA 
-  return 0;
-  #else
-      //Read the 4 bytes from the eeprom memory.
-      long four = EEPROM.read(address);
-      long three = EEPROM.read(address + 1);
-      long two = EEPROM.read(address + 2);
-      long one = EEPROM.read(address + 3);
-
-      //Return the recomposed long by using bitshift.
-      return ((four << 0) & 0xFF) + ((three << 8) & 0xFFFF) + ((two << 16) & 0xFFFFFF) + ((one << 24) & 0xFFFFFFFF); 
-  #endif       
-}
-*/
-
-
-// returns the number of bytes written
-int Storage::EEPROMUpdateSpeedLimit(const long startAddress, const speedlimit& value)
-{
-    const byte* p = (const byte*)(const void*)&value;
-    unsigned int i;
-    long address = startAddress;
-    for (i = 0; i < sizeof(value); i++)
-          EEPROM.update(address++, *p++);
-    return i;
-}
-
-// returns the number of bytes read
-int Storage::EEPROMReadSpeedLimit(const long startAddress,  speedlimit& value)
-{
-    byte* p = (byte*)(void*)&value;
-    unsigned int i;
-    long address = startAddress;
-    for (i = 0; i < sizeof(value); i++)
-          *p++ = EEPROM.read(address++);
-    return i;
-}

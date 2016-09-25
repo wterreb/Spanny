@@ -7,10 +7,19 @@ typedef struct command {
     char *description;
 } command_t;
 
-typedef struct speedlimit {  
+typedef struct Speedlimit_t {  
    byte lowerLimit;
    byte upperLimit;
    byte delaySeconds;
+};  
+
+typedef struct Settings_t {  
+   int onTime;
+   int offTime;
+   int repeats;
+   int interval;
+   byte useMetric;
+   int8_t timezone;
 };   
 
 
