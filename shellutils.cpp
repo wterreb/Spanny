@@ -111,7 +111,10 @@ void SHELLUTILS_PrintHelp( shellType_t const *pInfo ) {
     Serial.println( "Command Summary:" );
     for ( i=0; i < pInfo->numFuncs; i++ ) {
         Serial.print( pInfo->pFuncs[ i ].name );
-        Serial.print( "\t\t-\t");
+        if (strlen(pInfo->pFuncs[ i ].name) < 8) {
+          Serial.print( "\t");
+        }
+        Serial.print( "\t-\t");
         Serial.println( pInfo->pFuncs[ i ].description );
     }
 }

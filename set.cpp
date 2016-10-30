@@ -25,7 +25,7 @@ static functions_t funcs[] = {
     { "zone",      SHELL_COMMAND  SetZoneSpeedLimits,   "zone <zone> <lowerSpeedTheshold> <upperSpeedTheshold> <delaySecs>" },
     { "buzzer",    SHELL_COMMAND  SetBuzzer,            "buzzer <parameter> <value>" },
     { "speed",     SHELL_COMMAND  SetSpeedUnit,         "speedunit <kmh> <mph>" },
-    { "defaults",  SHELL_COMMAND  SetAllDefaults,         "USE WITH CARE! Sets all settings to default values" },
+    { "defaults",  SHELL_COMMAND  SetAllDefaults,       "Sets all settings to default values (USE WITH CARE!) " },
     { "show",      SHELL_COMMAND  ShowSettings,         "shows all configurable settings" },
     { "",          SHELL_COMMAND  ShowSettings,         ""}
 };
@@ -237,7 +237,7 @@ void printTimeZone2( void ) {
 void showExistingSpeedLimits() {
    char buff[50];
    Serial.println(DRAWLINE);
-   Serial.println("|         Current Speed Limits     |");
+   Serial.println("|      Current Speed Limits       |");
    Serial.println(DRAWLINE);
    Serial.println("| Zone |  Low   |  High  | Delay  |");
    for (int i=0; i<gZoneCount; i++) {
@@ -250,7 +250,7 @@ void showExistingSpeedLimits() {
 
 void showExistingSettings() {
    Serial.println(DRAWLINE);
-   Serial.println("|         Current Settings         |");
+   Serial.println("|         Current Settings        |");
    Serial.println(DRAWLINE);
    Serial.print("buzzer ontime\t: "); Serial.println(gSettings.onTime);
    Serial.print("buzzer offtime\t: "); Serial.println(gSettings.offTime);
